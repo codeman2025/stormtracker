@@ -1,42 +1,28 @@
-const stormInfo = document.getElementById("storm-info");
-const fetchModelsButton = document.getElementById("fetch-models-btn");
-const modelsInfoContainer = document.getElementById("weather-models-info");
+// The base URL for the Tropical Tidbits model images
+const modelBaseURL = "https://www.tropicaltidbits.com/analysis/models/?model=gfs&region=eu&pkg=mslp_pcpn_frzn";
 
-// OpenWeatherMap API
-const apiKey = 'YOUR_API_KEY'; // Replace with your OpenWeatherMap API key
-const stormUrl = `https://api.openweathermap.org/data/2.5/weather?q=Dublin,IE&appid=${apiKey}&units=metric`; // For storm-related data
+// Forecast hours array (you can adjust it as needed)
+const forecastHours = [6, 12, 18, 24, 30]; // Forecast hours (6, 12, 18, 24, 30)
+let currentForecastIndex = 0;  // To track the current forecast hour
 
-// Fetch storm information
-async function fetchStormInfo() {
-    try {
-        const response = await fetch(stormUrl);
-        const data = await response.json();
-        document.getElementById("storm-name").textContent = `Storm: ${data.name}`;
-        document.getElementById("storm-status").textContent = `Weather status: ${data.weather[0].description}`;
-        document.getElementById("storm-icon").style.backgroundImage = `url('http://openweathermap.org/img/wn/${data.weather[0].icon}.png')`;
-    } catch (error) {
-        console.error('Error fetching storm data:', error);
-        alert('Failed to fetch storm data');
-    }
+// Function to load a new model
+function loadModel() {
+    // Get the forecast hour for the model image
+    const forecastHour = forecastHours[currentForecastIndex];
+
+    // Construct the URL for the model
+    const modelURL = `${modelBaseURL}&runtime=2025021012&fh=${forecastHour}`;
+
+    // Set the source of the image to the new model URL
+    const modelImage = document.getElementById("storm-model");
+    modelImage.src = modelURL;
+
+    // Increment the forecast index for the next button click
+    currentForecastIndex = (currentForecastIndex + 1) % forecastHours.length;  // Loop through forecast hours
 }
 
-// Fetch weather models (example: OpenWeatherMap forecast)
-async function fetchWeatherModels() {
-    try {
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=Dublin,IE&appid=${apiKey}&units=metric`);
-        const data = await response.json();
-        const modelInfo = data.list.slice(0, 5).map(forecast => {
-            return `<p>Time: ${forecast.dt_txt} - Temp: ${forecast.main.temp}°C, Weather: ${forecast.weather[0].description}</p>`;
-        }).join('');
-        modelsInfoContainer.innerHTML = modelInfo;
-    } catch (error) {
-        console.error('Error fetching weather models:', error);
-        alert('Failed to fetch weather models');
-    }
-}
+// Initial model load
+loadModel();
 
-// Event listeners
-fetchModelsButton.addEventListener("click", fetchWeatherModels);
-
-// Initialize the app
-fetchStormInfo();
+// Button to load the next model in sequence
+document.getElementById("load-next-model-btn").addEventListener("click", loadModel);
