@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#333333">
+    <title>Storm Tracker IE</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <header>
+        <h1>Storm Tracker IE</h1>
+    </header>
+    
+    <div class="container">
+        <section id="weather-info" class="storm-info">
+            <h2>Live Storm Data</h2>
+            <div class="storm-details">
+                <p id="storm-name">Loading storm info...</p>
+                <p id="storm-status">Weather status: Loading...</p>
+                <div id="storm-icon"></div>
+            </div>
+        </section>
+        
+        <section id="weather-models">
+            <h3>Weather Models</h3>
+            <button id="fetch-models-btn">Fetch Models</button>
+            <div id="weather-models-info"></div>
+        </section>
+        
+        <footer>
+            <p>Powered by Storm Tracker IE - Designed for Ireland</p>
+        </footer>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
